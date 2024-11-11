@@ -5,8 +5,12 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createCohere } from '@ai-sdk/cohere'
 import { createMistral } from '@ai-sdk/mistral'
 import { createAzure } from '@ai-sdk/azure'
-import { streamText, generateText, CoreMessage } from 'ai'
+import { streamText, generateText, CoreMessage, CoreTool } from 'ai'
 import { NextRequest } from 'next/server'
+
+import { createAISDKTools } from '@agentic/ai-sdk'
+import { WeatherClient } from '@agentic/weather'
+import { TavilyClient } from '@agentic/tavily'
 
 type AIServiceKey =
   | 'openai'
@@ -41,8 +45,15 @@ export default async function handler(req: NextRequest) {
     )
   }
 
-  const { messages, apiKey, aiService, model, azureEndpoint, stream } =
-    await req.json()
+  const {
+    messages,
+    apiKey,
+    aiService,
+    model,
+    azureEndpoint,
+    stream,
+    toolRequired,
+  } = await req.json()
 
   let aiApiKey = apiKey
   if (!aiApiKey) {
@@ -130,10 +141,25 @@ export default async function handler(req: NextRequest) {
 
   try {
     if (stream) {
-      const result = await streamText({
+      const weather = new WeatherClient()
+      const tavily = new TavilyClient()
+      const tools = createAISDKTools(weather, tavily)
+      const jsonDate: {
+        model: any
+        messages: CoreMessage[]
+        tools?: Record<string, CoreTool<any, any>>
+        toolChoice?: 'none' | 'auto'
+      } = {
         model: instance(modifiedModel),
         messages: modifiedMessages as CoreMessage[],
-      })
+        tools: tools,
+      }
+
+      if (!toolRequired) {
+        jsonDate['toolChoice'] = 'none'
+      }
+
+      const result = await streamText(jsonDate)
 
       return result.toDataStreamResponse()
     } else {
