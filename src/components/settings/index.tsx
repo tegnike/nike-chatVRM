@@ -4,11 +4,14 @@ import menuStore from '@/features/stores/menu'
 
 import { GitHubLink } from '../githubLink'
 import { IconButton } from '../iconButton'
+import Description from './description'
 import Based from './based'
+import Character from './character'
 import AI from './ai'
 import Voice from './voice'
 import YouTube from './youtube'
 import Slide from './slide'
+import Log from './log'
 import Other from './other'
 
 type Props = {
@@ -41,7 +44,16 @@ const Header = ({ onClickClose }: Pick<Props, 'onClickClose'>) => {
 }
 
 // タブの定義
-type TabKey = 'general' | 'ai' | 'youtube' | 'voice' | 'slide' | 'other'
+type TabKey =
+  | 'description'
+  | 'based'
+  | 'character'
+  | 'ai'
+  | 'voice'
+  | 'youtube'
+  | 'slide'
+  | 'log'
+  | 'other'
 
 const Main = () => {
   const { t } = useTranslation()
@@ -52,8 +64,16 @@ const Main = () => {
 
   const tabs: { key: TabKey; label: string }[] = [
     {
-      key: 'general',
-      label: t('Settings'),
+      key: 'description',
+      label: t('Description'),
+    },
+    {
+      key: 'based',
+      label: t('BasedSettings'),
+    },
+    {
+      key: 'character',
+      label: t('CharacterSettings'),
     },
     {
       key: 'ai',
@@ -72,6 +92,10 @@ const Main = () => {
       label: t('SlideSettings'),
     },
     {
+      key: 'log',
+      label: t('LogSettings'),
+    },
+    {
       key: 'other',
       label: t('OtherSettings'),
     },
@@ -79,8 +103,12 @@ const Main = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'general':
+      case 'description':
+        return <Description />
+      case 'based':
         return <Based />
+      case 'character':
+        return <Character />
       case 'ai':
         return <AI />
       case 'voice':
@@ -89,6 +117,8 @@ const Main = () => {
         return <YouTube />
       case 'slide':
         return <Slide />
+      case 'log':
+        return <Log />
       case 'other':
         return <Other />
     }

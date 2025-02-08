@@ -5,6 +5,9 @@ import { VoiceLanguage } from '@/features/constants/settings'
 import webSocketStore from '@/features/stores/websocketStore'
 import { useTranslation } from 'react-i18next'
 import toastStore from '@/features/stores/toast'
+import { SpeakQueue } from '@/features/messages/speakQueue'
+import { Live2DHandler } from '@/features/messages/live2dHandler'
+import homeStore from '@/features/stores/home'
 
 const NO_SPEECH_TIMEOUT = 3000
 
@@ -28,8 +31,14 @@ export const MessageInputContainer = ({ onChatProcessStart }: Props) => {
   const audioChunksRef = useRef<Blob[]>([])
   const isListeningRef = useRef(false)
   const [isListening, setIsListening] = useState(false)
+  const isSpeaking = homeStore((s) => s.isSpeaking)
 
   const { t } = useTranslation()
+
+  // 音声停止
+  const handleStopSpeaking = useCallback(() => {
+    homeStore.setState({ isSpeaking: false })
+  }, [])
 
   const checkMicrophonePermission = async (): Promise<boolean> => {
     // Firefoxの場合はエラーメッセージを表示して終了
@@ -285,14 +294,16 @@ export const MessageInputContainer = ({ onChatProcessStart }: Props) => {
       keyPressStartTime.current = Date.now()
       isKeyboardTriggered.current = true
       startListening()
+      handleStopSpeaking()
     }
-  }, [startListening, stopListening])
+  }, [startListening, stopListening, handleStopSpeaking])
 
   useEffect(() => {
     const handleKeyDown = async (e: KeyboardEvent) => {
       if (e.key === 'Alt' && !isListeningRef.current) {
         keyPressStartTime.current = Date.now()
         isKeyboardTriggered.current = true
+        handleStopSpeaking()
         await startListening()
       }
     }
@@ -310,15 +321,16 @@ export const MessageInputContainer = ({ onChatProcessStart }: Props) => {
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [startListening, stopListening])
+  }, [startListening, stopListening, handleStopSpeaking])
 
   // メッセージ送信
   const handleSendMessage = useCallback(() => {
     if (userMessage.trim()) {
+      handleStopSpeaking()
       onChatProcessStart(userMessage)
       setUserMessage('')
     }
-  }, [userMessage, onChatProcessStart])
+  }, [userMessage, onChatProcessStart, handleStopSpeaking])
 
   // メッセージ入力
   const handleInputChange = useCallback(
@@ -331,10 +343,12 @@ export const MessageInputContainer = ({ onChatProcessStart }: Props) => {
   return (
     <MessageInput
       userMessage={userMessage}
-      isMicRecording={isListening} // useState の値を使用
+      isMicRecording={isListening}
       onChangeUserMessage={handleInputChange}
       onClickMicButton={toggleListening}
       onClickSendButton={handleSendMessage}
+      onClickStopButton={handleStopSpeaking}
+      isSpeaking={isSpeaking}
     />
   )
 }

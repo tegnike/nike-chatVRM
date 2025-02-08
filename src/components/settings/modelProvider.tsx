@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import menuStore from '@/features/stores/menu'
 import settingsStore from '@/features/stores/settings'
 import slideStore from '@/features/stores/slide'
-import { SYSTEM_PROMPT } from '@/features/constants/systemPromptConstants'
 import { Link } from '../link'
 import { TextButton } from '../textButton'
 import { useCallback } from 'react'
@@ -480,23 +479,20 @@ const ModelProvider = () => {
                     }
                   }}
                 >
+                  <option value="gemini-2.0-flash-001">
+                    gemini-2.0-flash-001
+                  </option>
+                  <option value="gemini-2.0-flash-lite-preview-02-05">
+                    gemini-2.0-flash-lite-preview-02-05
+                  </option>
                   <option value="gemini-1.5-flash-latest">
                     gemini-1.5-flash-latest
                   </option>
+                  <option value="gemini-1.5-flash-8b-latest">
+                    gemini-1.5-flash-8b-latest
+                  </option>
                   <option value="gemini-1.5-pro-latest">
                     gemini-1.5-pro-latest
-                  </option>
-                  <option value="gemini-1.5-flash-exp-0827">
-                    gemini-1.5-flash-exp-0827
-                  </option>
-                  <option value="gemini-1.5-pro-exp-0827">
-                    gemini-1.5-pro-exp-0827
-                  </option>
-                  <option value="gemini-1.5-flash-8b-exp-0827">
-                    gemini-1.5-flash-8b-exp-0827
-                  </option>
-                  <option value="gemini-2.0-flash-exp">
-                    gemini-2.0-flash-exp
                   </option>
                 </select>
               </div>
@@ -1086,34 +1082,6 @@ const ModelProvider = () => {
           </div>
         </>
       )}
-      <div className="mt-40">
-        <div className="my-8">
-          <div className="my-16 typography-20 font-bold">
-            {t('CharacterSettingsPrompt')}
-          </div>
-          {selectAIService === 'dify' ? (
-            <div className="my-16">{t('DifyInstruction')}</div>
-          ) : (
-            <div className="my-16 whitespace-pre-line">
-              {t('CharacterSettingsInfo')}
-            </div>
-          )}
-          <TextButton
-            onClick={() =>
-              settingsStore.setState({ systemPrompt: SYSTEM_PROMPT })
-            }
-          >
-            {t('CharacterSettingsReset')}
-          </TextButton>
-        </div>
-        <textarea
-          value={systemPrompt}
-          onChange={(e) =>
-            settingsStore.setState({ systemPrompt: e.target.value })
-          }
-          className="px-16 py-8 bg-surface1 hover:bg-surface1-hover h-168 rounded-8 w-full"
-        ></textarea>
-      </div>
     </div>
   )
 }

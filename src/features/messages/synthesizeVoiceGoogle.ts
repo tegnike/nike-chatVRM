@@ -30,7 +30,12 @@ export async function synthesizeVoiceGoogleApi(
 
     const data = await res.json()
 
-    const uint8Array = new Uint8Array(data.audio.data)
+    // Base64文字列をデコードしてArrayBufferに変換
+    const binaryStr = atob(data.audio)
+    const uint8Array = new Uint8Array(binaryStr.length)
+    for (let i = 0; i < binaryStr.length; i++) {
+      uint8Array[i] = binaryStr.charCodeAt(i)
+    }
     const arrayBuffer: ArrayBuffer = uint8Array.buffer
 
     return arrayBuffer
@@ -47,7 +52,7 @@ function getGoogleTtsType(
   googleTtsType: string,
   selectLanguage: Language
 ): string {
-  if (googleTtsType) return googleTtsType
+  if (googleTtsType && googleTtsType.trim()) return googleTtsType
 
   switch (selectLanguage) {
     case 'ja':

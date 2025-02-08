@@ -21,27 +21,8 @@ export default async function handler(
   }
 
   try {
-    const { messages, isNewFile } = req.body
+    const { message, isNewFile } = req.body
     const created_at = new Date().toISOString()
-
-    // メッセージ内の画像データを省略
-    const processedMessages = messages.map((msg: any) => {
-      if (msg.content && Array.isArray(msg.content)) {
-        return {
-          ...msg,
-          content: msg.content.map((content: any) => {
-            if (content.type === 'image') {
-              return {
-                type: 'image',
-                image: '[image data omitted]',
-              }
-            }
-            return content
-          }),
-        }
-      }
-      return msg
-    })
 
     const logsDir = path.join(process.cwd(), 'logs')
 
@@ -55,9 +36,21 @@ export default async function handler(
       : getLatestLogFile(logsDir)
 
     const filePath = path.join(logsDir, fileName)
-    fs.writeFileSync(filePath, JSON.stringify(processedMessages, null, 2))
 
-    // TODO: 標準化する
+    // ファイルの読み込みと更新
+    let messages = []
+    if (fs.existsSync(filePath)) {
+      const fileContent = fs.readFileSync(filePath, 'utf-8')
+      messages = JSON.parse(fileContent)
+      if (!Array.isArray(messages)) {
+        messages = [messages] // 単一のメッセージの場合は配列に変換
+      }
+    }
+    messages.push(message)
+
+    // 更新されたメッセージ配列を保存
+    fs.writeFileSync(filePath, JSON.stringify(messages, null, 2))
+
     if (supabase) {
       // 既存のセッションを検索
       const { data: existingSession } = await supabase
@@ -94,13 +87,12 @@ export default async function handler(
       }
 
       // 最新のメッセージのみを保存
-      const lastMessage = processedMessages[processedMessages.length - 1]
       const messageToSave = {
         session_id: sessionId,
-        role: lastMessage.role,
-        content: Array.isArray(lastMessage.content)
-          ? JSON.stringify(lastMessage.content)
-          : lastMessage.content,
+        role: message.role,
+        content: Array.isArray(message.content)
+          ? JSON.stringify(message.content)
+          : message.content,
         created_at: created_at,
       }
 

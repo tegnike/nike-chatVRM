@@ -52,9 +52,16 @@ const createSpeakCharacter = () => {
   let lastTime = 0
   let prevFetchPromise: Promise<unknown> = Promise.resolve()
 
-  return (talk: Talk, onStart?: () => void, onComplete?: () => void) => {
+  return (
+    sessionId: string,
+    talk: Talk,
+    onStart?: () => void,
+    onComplete?: () => void
+  ) => {
     const ss = settingsStore.getState()
     onStart?.()
+
+    speakQueue.checkSessionId(sessionId)
 
     const processedMessage = preprocessMessage(talk.message, ss)
     if (!processedMessage && !talk.buffer) {

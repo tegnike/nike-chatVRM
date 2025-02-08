@@ -27,7 +27,10 @@ export default function App({ Component, pageProps }: AppProps) {
       ? 'zh'
       : browserLanguage.split('-')[0].toLowerCase()
 
-    const language = isLanguageSupported(languageCode) ? languageCode : 'ja'
+    let language = ss.selectLanguage
+    if (!language) {
+      language = isLanguageSupported(languageCode) ? languageCode : 'ja'
+    }
     i18n.changeLanguage(language)
     settingsStore.setState({ selectLanguage: language })
 

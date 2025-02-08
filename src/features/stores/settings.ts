@@ -26,7 +26,7 @@ export type multiModalAIServiceKey = (typeof multiModalAIServices)[number]
 export const googleSearchGroundingModels = [
   'gemini-1.5-flash-latest',
   'gemini-1.5-pro-latest',
-  'gemini-2.0-flash-exp',
+  'gemini-2.0-flash-001',
 ] as const
 export type googleSearchGroundingModelKey =
   (typeof googleSearchGroundingModels)[number]
@@ -191,8 +191,7 @@ const settingsStore = create<SettingsState>()(
       selectVoice:
         (process.env.NEXT_PUBLIC_SELECT_VOICE as AIVoice) || 'voicevox',
       koeiroParam: DEFAULT_PARAM,
-      googleTtsType:
-        process.env.NEXT_PUBLIC_GOOGLE_TTS_TYPE || 'en-US-Neural2-F',
+      googleTtsType: process.env.NEXT_PUBLIC_GOOGLE_TTS_TYPE || '',
       voicevoxSpeaker: process.env.NEXT_PUBLIC_VOICEVOX_SPEAKER || '46',
       voicevoxSpeed:
         parseFloat(process.env.NEXT_PUBLIC_VOICEVOX_SPEED || '1.0') || 1.0,
@@ -201,7 +200,8 @@ const settingsStore = create<SettingsState>()(
       voicevoxIntonation:
         parseFloat(process.env.NEXT_PUBLIC_VOICEVOX_INTONATION || '1.0') || 1.0,
       voicevoxServerUrl: '',
-      aivisSpeechSpeaker: process.env.NEXT_PUBLIC_AIVIS_SPEECH_SPEAKER || '46',
+      aivisSpeechSpeaker:
+        process.env.NEXT_PUBLIC_AIVIS_SPEECH_SPEAKER || '888753760',
       aivisSpeechSpeed:
         parseFloat(process.env.NEXT_PUBLIC_AIVIS_SPEECH_SPEED || '1.0') || 1.0,
       aivisSpeechPitch:

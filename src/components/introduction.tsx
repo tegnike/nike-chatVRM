@@ -48,7 +48,7 @@ export const Introduction = () => {
             {t('AboutThisApplication')}
           </div>
           <div>
-            <Trans i18nKey="AboutThisApplicationDescription" />
+            <Trans i18nKey="AboutThisApplicationDescription2" />
           </div>
         </div>
         <div className="my-24">

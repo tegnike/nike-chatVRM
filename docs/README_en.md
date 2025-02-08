@@ -219,13 +219,19 @@ By using Cubism 2.1 and Cubism 4/5, we support all variants of Live2D models.
 
 #### Cubism Core
 
-Before using this feature, you need to place the Cubism Core (Cubism runtime library) files in `public/scripts`.
+Before using this feature, you need to set the following Cubism Core (Cubism runtime library) files in both `public/scripts`:
 
-- For Cubism 4/5: `live2dcubismcore.min.js` is required. This can be obtained from the [official website](https://www.live2d.com/sdk/download/web/). It's also available from [here](https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js). (Note: Not recommended for production use)
+1. `live2dcubismcore.min.js` (Cubism 4/5)
 
-- For Cubism 2.1: `live2d.min.js` is required. While it's no longer available for download from the official website since September 4, 2019, it can be obtained from:
-  - GitHub: [dylanNew/live2d](https://github.com/dylanNew/live2d/tree/master/webgl/Live2D/lib)
-  - CDN: https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js
+   - [Official website](https://www.live2d.com/sdk/download/web/)
+   - [Alternative](https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js) (Note: Not recommended for production use)
+
+2. `live2d.min.js` (Cubism 2.1)
+   - Since September 4, 2019, the official website no longer allows downloads, but it is available from:
+     - GitHub: [dylanNew/live2d](https://github.com/dylanNew/live2d/tree/master/webgl/Live2D/lib)
+     - CDN: https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js
+
+By setting both files, you can support all versions of Live2D models.
 
 ### Background Image Setting
 
@@ -349,6 +355,17 @@ From version v2.0.0, this project adopts a **custom license**.
 - **Commercial License**
   - A separate commercial license is required for commercial use.
   - For details, please check [About License](./license_en.md).
+
+## Priority Implementation
+
+This project accepts paid priority implementation requests.
+
+- You can prioritize the implementation of features requested by companies or individuals.
+- The implemented features will be part of this OSS project.
+- The fee will be estimated individually depending on the complexity and time required for implementation.
+- This priority implementation is a separate initiative from the commercial license. If you want to use the implemented features commercially, you need to obtain a separate commercial license.
+
+For details, please contact support@aituberkit.com.
 
 ### Others
 

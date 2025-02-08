@@ -14,6 +14,7 @@ export class SpeakQueue {
   private static readonly QUEUE_CHECK_DELAY = 1500
   private queue: SpeakTask[] = []
   private isProcessing = false
+  private currentSessionId: string | null = null
 
   async addTask(task: SpeakTask) {
     this.queue.push(task)
@@ -22,10 +23,19 @@ export class SpeakQueue {
 
   private async processQueue() {
     if (this.isProcessing) return
+
     this.isProcessing = true
     const hs = homeStore.getState()
     const ss = settingsStore.getState()
-    while (this.queue.length > 0) {
+
+    while (this.queue.length > 0 && hs.isSpeaking) {
+      const currentState = homeStore.getState()
+      if (!currentState.isSpeaking) {
+        this.clearQueue()
+        homeStore.setState({ isSpeaking: false })
+        break
+      }
+
       const task = this.queue.shift()
       if (task) {
         try {
@@ -50,6 +60,9 @@ export class SpeakQueue {
 
     this.isProcessing = false
     this.scheduleNeutralExpression()
+    if (!hs.chatProcessing) {
+      this.clearQueue()
+    }
   }
 
   private async scheduleNeutralExpression() {
@@ -75,5 +88,13 @@ export class SpeakQueue {
 
   clearQueue() {
     this.queue = []
+  }
+
+  checkSessionId(sessionId: string) {
+    if (this.currentSessionId !== sessionId) {
+      this.currentSessionId = sessionId
+      this.clearQueue()
+      homeStore.setState({ isSpeaking: true })
+    }
   }
 }

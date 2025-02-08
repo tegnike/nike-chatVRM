@@ -218,13 +218,19 @@ Cubism 2.1とCubism 4/5を使用することで、すべてのバリアントの
 
 #### Cubism Core
 
-この機能を利用する前に、Cubism Core（Cubismランタイムライブラリ）ファイルを `public/scripts` に設置する必要があります。
+この機能を利用する前に、以下のCubism Core（Cubismランタイムライブラリ）ファイルを両方とも `public/scripts` に設置する必要があります：
 
-- Cubism 4/5の場合：`live2dcubismcore.min.js` が必要です。これは[公式サイト](https://www.live2d.com/sdk/download/web/)から入手可能です。また、[こちら](https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js) からも入手可能です。（注：本番環境での使用は推奨されません）
+1. `live2dcubismcore.min.js`（Cubism 4/5用）
 
-- Cubism 2.1の場合：`live2d.min.js` が必要です。2019年9月4日以降、公式サイトからはダウンロードできなくなっていますが、以下から入手可能です：
-  - GitHub: [dylanNew/live2d](https://github.com/dylanNew/live2d/tree/master/webgl/Live2D/lib)
-  - CDN: https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js
+   - [公式サイト](https://www.live2d.com/sdk/download/web/)からダウンロード可能
+   - または[こちら](https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js)から入手可能（注：本番環境での使用は推奨されません）
+
+2. `live2d.min.js`（Cubism 2.1用）
+   - 2019年9月4日以降、公式サイトからはダウンロードできなくなっていますが、以下から入手可能：
+     - GitHub: [dylanNew/live2d](https://github.com/dylanNew/live2d/tree/master/webgl/Live2D/lib)
+     - CDN: https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js
+
+両方のファイルを設置することで、すべてのバージョンのLive2Dモデルをサポートすることができます。
 
 ### 背景画像の設定
 
@@ -348,6 +354,17 @@ Cubism 2.1とCubism 4/5を使用することで、すべてのバリアントの
 - **商用ライセンス**
   - 商用目的での使用に関しては、別途商用ライセンスの取得が必要です。
   - 詳細は、[ライセンスについて](./docs/license.md)をご確認ください。
+
+## 優先実装について
+
+本プロジェクトでは、有償での機能優先実装を受け付けています。
+
+- 企業や個人の方から要望のあった機能を、優先的に実装することが可能です。
+- 実装された機能は、本OSSプロジェクトの一部として公開されます。
+- 料金は機能の複雑さや実装に要する時間に応じて個別見積もりとなります。
+- この優先実装は商用ライセンスとは別の取り組みです。実装された機能を商用利用する場合は、別途商用ライセンスの取得が必要です。
+
+詳細については、support@aituberkit.com までお問い合わせください。
 
 ### その他
 
